@@ -6,15 +6,19 @@ namespace SailClubLibrary.Helpers.Sorting
     {
         public int Compare(Boat? x, Boat? y)
         {
-            if (x == null || y == null)
+            if (x == null)
             {
-                throw new ArgumentNullException();
+                return -1;
             }
-            if (x.YearOfConstruction == y.YearOfConstruction)
+            if (y == null)
+            {
+                return 1;
+            }
+            if (x.YearOfConstruction.Equals(y.YearOfConstruction))
             {
                 return 0;
             }
-            if (x.YearOfConstruction != y.YearOfConstruction)
+            if (!x.YearOfConstruction.Equals(y.YearOfConstruction))
             {
                 return 1;
             }

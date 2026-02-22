@@ -6,9 +6,13 @@ namespace SailClubLibrary.Helpers.Sorting
     {
         public int Compare(Boat? x, Boat? y)
         {
-            if (x == null || y == null)
+            if (x == null)
             {
-                throw new ArgumentNullException();
+                return -1;
+            }
+            if (y == null)
+            {
+                return 1;
             }
             if (x.SailNumber == y.SailNumber)
             {

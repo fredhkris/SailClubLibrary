@@ -1,0 +1,35 @@
+﻿@page
+@using SailClubLibrary.Models
+@model RazorBoatApp2026.Pages.Bookings.ChooseBoatModel
+@{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <form method="get">
+                <th>BoatType</th>
+                <th>Model</th>
+                <th>SailNumber</th>
+                <th>YearOfConstruction</th>
+                </form>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Boat item in Model.Boats)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.TheBoatType</td>
+                    <td>@item.Model</td>
+                    <td>@item.SailNumber</td>
+                    <td>@item.YearOfConstruction</td>
+                    <td>
+                        <a asp-page="BookBoat" asp-route-sailNumber="@item.SailNumber">Book</a> |
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}

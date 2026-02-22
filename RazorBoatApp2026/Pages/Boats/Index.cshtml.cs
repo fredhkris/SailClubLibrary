@@ -36,7 +36,11 @@ namespace RazorBoatApp2026InClass.Pages.Boats
 
         public void SortBoats()
         {
-            if(SortBy.Equals("Id"))
+            if (string.IsNullOrEmpty(SortBy))
+            {
+                return;
+            }
+            if (SortBy.Equals("Id"))
             {
                 BoatCompareById c = new();
                 Boats.Sort(c);
