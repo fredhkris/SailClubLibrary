@@ -1,18 +1,29 @@
 ﻿@page
 @model RazorBoatApp2026.Pages.Bookings.CreateBookingModel
-<label>Boat sailnumber</label>: @Model.Boat.SailNumber<br/>
 <h1>Create Booking</h1>
-<div>
-    <label for="phone">Phone Number</label>
-    <input type="text" id="phone" name="phone" required minlength="8" maxlength="8" />
+<label>Boat SailNumber</label>: @Model.Boat.SailNumber
+<br />
+<label>Boat Model</label>: @Model.Boat.Model
+<br />
+<label>Boat YearOfConstruction</label>: @Model.Boat.YearOfConstruction
+<br />
+<div class="form-group">
+    <label asp-for="PhoneNumber"></label>
+    <input asp-for="PhoneNumber" type="text" required minlength="8" maxlength="8" />
+    <span asp-validation-for="PhoneNumber"></span>
 </div>
-<div>
-    <label for="startdate">Start Date</label>
-    <input type="date" id="startdate" name="startdate" />
+<div class="form-group">
+    <label asp-for="StartDate"></label>
+    <input asp-for="StartDate" type="date" />
+    <span asp-validation-for="StartDate"></span>
 </div>
-<div>
-    <label for="enddate">End Date</label>
-    <input type="date" id="enddate" name="enddate" />
+<div class="form-group">
+    <label asp-for="EndDate"></label>
+    <input asp-for="EndDate" type="date" />
+    <span asp-validation-for="EndDate"></span>
+</div>
+<div class="form-group">
+    <input type="submit" value="Create Booking" class="btn btn-primary" />
 </div>
 @{
 }
