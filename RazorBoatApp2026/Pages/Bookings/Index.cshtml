@@ -3,35 +3,39 @@
 @model RazorBoatApp2026.Pages.Bookings.IndexModel
 @{
     ViewData["Title"] = "List bookings";
-
-    <h1>Boats available</h1>
-    <p>
-        <a asp-page="CreateBooking">Create a new booking</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>StartDate</th>
-                <th>EndDate</th>
-                <th>IsActive</th>
-                <th>SailCompleted</th>
-                <th>Destination</th>
-                <th>TheMember</th>
-                <th>TheBoat</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Boat b in Model.Boats)
+}
+<h1>List of bookings</h1>
+<p>
+    <a asp-page="ChooseBoat">Create new booking</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>StartDate</td>
+            <td>EndDate</td>
+            <td>IsActive</td>
+            <td>SailCompleted</td>
+            <td>Destination</td>
+            <td>TheMember</td>
+            <td>TheBoat</td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Bookings.Any())
+        {
+            @foreach (Booking b in Model.Bookings)
             {
                 <tr>
                     <td>@b.Id</td>
-                    <td>@b.TheBoatType</td>
-                    <td>@b.Model</td>
-                    <td>@b.SailNumber</td>
-                    <td>@b.YearOfConstruction</td>
+                    <td>@b.StartDate</td>
+                    <td>@b.EndDate</td>
+                    <td>@b.IsActive</td>
+                    <td>@b.SailCompleted</td>
+                    <td>@b.Destination</td>
+                    <td>@b.TheMember</td>
+                    <td>@b.TheBoat</td>
                 </tr>
             }
-        </tbody>
-    </table>
-}
+        }
+</table>

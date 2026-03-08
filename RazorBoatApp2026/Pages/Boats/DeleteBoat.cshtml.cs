@@ -3,25 +3,29 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SailClubLibrary.Interfaces;
 using SailClubLibrary.Models;
 
-namespace RazorBoatApp2026InClass.Pages.Boats
+namespace RazorBoatApp2026.Pages.Boats
 {
     public class DeleteBoatModel : PageModel
     {
-        private IBoatRepository _repo;
+        private IBoatRepository _boatRepo;
+
+        [BindProperty]
         public Boat DeleteBoat { get; set; }
-        public DeleteBoatModel(IBoatRepository boatRepository)
+
+        public DeleteBoatModel(IBoatRepository boatRepo)
         {
-            _repo = boatRepository;
+            _boatRepo = boatRepo;
         }
+
         public IActionResult OnGet(string sailNumber)
         {
-            DeleteBoat = _repo.SearchBoat(sailNumber);
+            DeleteBoat = _boatRepo.SearchBoat(sailNumber);
             return Page();
         }
 
         public IActionResult OnPostDelete(string sailNumber)
         {
-            _repo.RemoveBoat(sailNumber);
+            _boatRepo.RemoveBoat(sailNumber);
             return RedirectToPage("Index");
         }
 

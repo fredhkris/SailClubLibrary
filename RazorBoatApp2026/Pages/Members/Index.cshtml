@@ -1,4 +1,88 @@
 ﻿@page
+@using SailClubLibrary.Models
 @model RazorBoatApp2026.Pages.Members.IndexModel
 @{
+    ViewData["Title"] = "List members";
 }
+<h1>List of members</h1>
+<p>
+    <a asp-page="CreateMember">Create a new member</a>
+</p>
+<form method="get">
+    search:<input type="text" asp-for="@Model.FilterCriteria" />
+    <select asp-for="@Model.FilterBy" class="form-select d-inline-block" style="width:auto; margin-left: 8px;">
+        <option value="All">All</option>
+        <option value="FirstName">FirstName</option>
+        <option value="SurName">SurName</option>
+        <option value="PhoneNumber">PhoneNumber</option>
+        <option value="Mail">Mail</option>
+        <option value="City">City</option>
+    </select>
+    <input type="submit" value="Filter" />
+    <br />
+    <input type="radio" asp-for="SelectedMemberType" value="All" checked="@Model.SelectedMemberType.HasValue" />
+    <label>All</label>
+    <br />
+    @foreach (MemberType mt in Enum.GetValues<MemberType>())
+    {
+        <input type="radio" asp-for="SelectedMemberType" value="@mt" />
+        <label>@mt</label>
+        <br />
+    }
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <form method="get">
+                <input type="hidden" name="FilterCriteria" value="@Model.FilterCriteria" />
+                <input type="hidden" name="FilterBy" value="@Model.FilterBy" />
+                <input type="hidden" name="SelectedMemberType" value="@Model.SelectedMemberType" />
+                <input type="hidden" name="IsDescending" value="@Model.IsDescending.ToString().ToLower()" />
+                <input type="hidden" name="PreviousSort" value="@Model.SortBy" />
+            <th>
+                <button type="submit" name="SortBy" value="Id" class="btn btn-link p-0">ID</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="FirstName" class="btn btn-link p-0">First Name</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="SurName" class="btn btn-link p-0">Last Name</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="PhoneNumber" class="btn btn-link p-0">Phone</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="Address" class="btn btn-link p-0">Address</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="City" class="btn btn-link p-0">City</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="Mail" class="btn btn-link p-0">Mail</button>
+            </th>
+            </form>
+            <th>Type</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Member m in Model.Members)
+        {
+            <tr>
+                <td>@m.Id</td>
+                <td>@m.FirstName</td>
+                <td>@m.SurName</td>
+                <td>@m.PhoneNumber</td>
+                <td>@m.Address</td>
+                <td>@m.City</td>
+                <td>@m.Mail</td>
+                <td>@m.TheMemberType</td>
+                <td>@m.TheMemberRole</td>
+                <td>
+                    <a asp-page="DeleteMember" asp-route-phoneNumber="@m.PhoneNumber">Delete</a> |
+                    <a asp-page="EditMember" asp-route-phoneNumber="@m.PhoneNumber">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

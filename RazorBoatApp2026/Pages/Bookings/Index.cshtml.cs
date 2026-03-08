@@ -2,30 +2,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SailClubLibrary.Interfaces;
 using SailClubLibrary.Models;
-using SailClubLibrary.Services;
 
 namespace RazorBoatApp2026.Pages.Bookings
 {
     public class IndexModel : PageModel
     {
-        private IBoatRepository _boatRepo;
+        private IBookingRepository _bookingRepo;
 
-        public List<Boat> Boats { get; set; }
         public List<Booking> Bookings { get; set; }
 
-        public IndexModel(IBoatRepository boatRepo)
+
+        public IndexModel(IBookingRepository bookingRepo)
         {
-            _boatRepo = boatRepo;
+            _bookingRepo = bookingRepo;
         }
 
         public void OnGet()
         {
-            Boats = _boatRepo.GetAllBoats();
-        }
-
-        public void BookBoat()
-        {
-
+            Bookings = _bookingRepo.GetAllBookings();
         }
     }
 }

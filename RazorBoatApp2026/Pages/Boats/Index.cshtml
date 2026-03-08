@@ -1,16 +1,13 @@
 ﻿@page
 @using SailClubLibrary.Models
-@model RazorBoatApp2026InClass.Pages.Boats.IndexModel
+@model RazorBoatApp2026.Pages.Boats.IndexModel
 @{
     ViewData["Title"] = "List boats";
 }
-
 <h1>List of boats</h1>
-
 <p>
     <a asp-page="CreateBoat">Create a new boat</a>
 </p>
-
 <form method="get">
     search:<input type="text" asp-for="@Model.FilterCriteria" />
     <input type="submit" value="Filter" />
@@ -18,41 +15,58 @@
 <table class="table">
     <thead>
         <tr>
-            @* <th>ID</th> *@
             <form method="get">
+                <input type="hidden" name="FilterCriteria" value="@Model.FilterCriteria" />
+                <input type="hidden" name="IsDescending" value="@((!Model.IsDescending).ToString())" />
             <th>
-                <button type="submit" class="btn btn-link" name="SortBy" value="ID">ID</button>
+                <button type="submit" name="SortBy" value="Id" class="btn btn-link">ID</button>
             </th>
-            <th>BoatType</th>
-            <th>Model</th>
-            @* <th>SailNumber</th> *@
             <th>
-                <button type="submit" class="btn btn-link" name="SortBy" value="SailNumber">SailNumber</button>
+                <button type="submit" name="SortBy" value="TheBoatType" class="btn btn-link">TheBoatType</button>
             </th>
-            @* <th>YearOfConstruction</th> *@
             <th>
-                <button type="submit" class="btn btn-link" name="SortBy" value="YearOfConstruction">YearOfConstruction</button>
+                <button type="submit" name="SortBy" value="Model" class="btn btn-link">Model</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="SailNumber" class="btn btn-link">SailNumber</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="EngineInfo" class="btn btn-link">EngineInfo</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="Draft" class="btn btn-link">Draft</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="Width" class="btn btn-link">Width</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="Length" class="btn btn-link">Length</button>
+            </th>
+            <th>
+                <button type="submit" name="SortBy" value="YearOfConstruction" class="btn btn-link">YearOfConstruction</button>
             </th>
             <th></th>
             </form>
-
         </tr>
     </thead>
     <tbody>
-        @foreach (Boat item in Model.Boats)
+        @foreach (Boat b in Model.Boats)
         {
             <tr>
-                <td>@item.Id</td>
-                <td>@item.TheBoatType</td>
-                <td>@item.Model</td>
-                <td>@item.SailNumber</td>
-                <td>@item.YearOfConstruction</td>
+                <td>@b.Id</td>
+                <td>@b.TheBoatType</td>
+                <td>@b.Model</td>
+                <td>@b.SailNumber</td>
+                <td>@b.EngineInfo</td>
+                <td>@b.Draft</td>
+                <td>@b.Width</td>
+                <td>@b.Length</td>
+                <td>@b.YearOfConstruction</td>
                 <td>
-                    <a asp-page="DeleteBoat" asp-route-sailNumber="@item.SailNumber">Delete</a> |
-                    <a asp-page="EditBoat" asp-route-sailNumber="@item.SailNumber">Edit</a>
+                    <a asp-page="DeleteBoat" asp-route-sailNumber="@b.SailNumber">Delete</a> |
+                    <a asp-page="EditBoat" asp-route-sailNumber="@b.SailNumber">Edit</a>
                 </td>
             </tr>
         }
-
     </tbody>
 </table>

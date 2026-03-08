@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace RazorBoatApp2026InClass.Pages
+namespace RazorBoatApp2026.Pages
 {
     public class IndexModel : PageModel
     {

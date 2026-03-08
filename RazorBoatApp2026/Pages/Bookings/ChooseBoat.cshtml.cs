@@ -7,18 +7,18 @@ namespace RazorBoatApp2026.Pages.Bookings
 {
     public class ChooseBoatModel : PageModel
     {
-        private IBoatRepository _repo;
+        private IBoatRepository _boatRepo;
 
         public List<Boat> Boats { get; set; }
 
         public ChooseBoatModel(IBoatRepository boatRepo)
         {
-            _repo = boatRepo;
+            _boatRepo = boatRepo;
         }
 
         public void OnGet()
         {
-            Boats = _repo.GetAllBoats();
+            Boats = _boatRepo.GetAllBoats();
         }
     }
 }

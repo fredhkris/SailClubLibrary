@@ -1,5 +1,9 @@
 ﻿@page
+@using SailClubLibrary.Models
 @model RazorBoatApp2026.Pages.Bookings.CreateBookingModel
+@{
+    ViewData["Title"] = "Create Booking";
+}
 <h1>Create Booking</h1>
 <label>Boat SailNumber</label>: @Model.Boat.SailNumber
 <br />
@@ -8,11 +12,8 @@
 <label>Boat YearOfConstruction</label>: @Model.Boat.YearOfConstruction
 <br />
 <form method="post">
-    <div class="form-group">
-        <label asp-for="@Model.PhoneNumber" class="control-label"></label>
-        <input asp-for="@Model.PhoneNumber" type="text" required minlength="8" maxlength="8" class="form-control" />
-        <span asp-validation-for="@Model.PhoneNumber"></span>
-    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" name="sailNumber" value="@Model.Boat.SailNumber" />
     <div class="form-group">
         <label asp-for="@Model.StartDate" class="control-label"></label>
         <input asp-for="@Model.StartDate" type="date" class="form-control" />
@@ -24,8 +25,16 @@
         <span asp-validation-for="@Model.EndDate"></span>
     </div>
     <div class="form-group">
+        <label asp-for="@Model.Destination" class="control-label"></label>
+        <input asp-for="@Model.Destination" class="form-control" />
+        <span asp-validation-for="@Model.Destination"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.PhoneNumber" class="control-label"></label>
+        <input asp-for="@Model.PhoneNumber" class="form-control" />
+        <span asp-validation-for="@Model.PhoneNumber"></span>
+    </div>
+    <div class="form-group">
         <input type="submit" value="Create Booking" class="btn btn-primary" />
     </div>
 </form>
-@{
-}

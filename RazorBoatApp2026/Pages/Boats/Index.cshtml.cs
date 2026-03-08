@@ -4,11 +4,12 @@ using SailClubLibrary.Helpers.Sorting;
 using SailClubLibrary.Interfaces;
 using SailClubLibrary.Models;
 
-namespace RazorBoatApp2026InClass.Pages.Boats
+namespace RazorBoatApp2026.Pages.Boats
 {
     public class IndexModel : PageModel
     {
-        private IBoatRepository bRepo;
+        private readonly IBoatRepository _boatRepo;
+
         public List<Boat> Boats { get; set; }
 
         [BindProperty(SupportsGet = true)]
@@ -17,44 +18,63 @@ namespace RazorBoatApp2026InClass.Pages.Boats
         [BindProperty(SupportsGet = true)]
         public string SortBy { get; set; }
 
-        public IndexModel(IBoatRepository boatRepository)
+        [BindProperty(SupportsGet = true)]
+        public bool IsDescending { get; set; }
+
+        public IndexModel(IBoatRepository boatRepo)
         {
-            bRepo = boatRepository;
+            _boatRepo = boatRepo;
         }
+
         public void OnGet()
         {
             if (!string.IsNullOrEmpty(FilterCriteria))
             {
-                Boats = bRepo.FilterBoats(FilterCriteria);
+                Boats = _boatRepo.FilterBoats(FilterCriteria);
             }
             else
             {
-                Boats = bRepo.GetAllBoats();
+                Boats = _boatRepo.GetAllBoats();
             }
-            SortBoats();
+            if (!string.IsNullOrEmpty(SortBy))
+            {
+                SortBoats();
+            }
         }
 
         public void SortBoats()
         {
-            if (string.IsNullOrEmpty(SortBy))
+            switch (SortBy)
             {
-                return;
+                case "Id":
+                    Boats.Sort(new GenericComparer<Boat, int>(b => b.Id, IsDescending));
+                    break;
+                case "TheBoatType":
+                    Boats.Sort(new GenericComparer<Boat, string>(b => b.TheBoatType.ToString(), IsDescending));
+                    break;
+                case "Model":
+                    Boats.Sort(new GenericComparer<Boat, string>(b => b.Model, IsDescending));
+                    break;
+                case "SailNumber":
+                    Boats.Sort(new GenericComparer<Boat, string>(b => b.SailNumber, IsDescending));
+                    break;
+                case "EngineInfo":
+                    Boats.Sort(new GenericComparer<Boat, string>(b => b.EngineInfo, IsDescending));
+                    break;
+                case "Draft":
+                    Boats.Sort(new GenericComparer<Boat, double>(b => b.Draft, IsDescending));
+                    break;
+                case "Width":
+                    Boats.Sort(new GenericComparer<Boat, double>(b => b.Width, IsDescending));
+                    break;
+                case "Length":
+                    Boats.Sort(new GenericComparer<Boat, double>(b => b.Length, IsDescending));
+                    break;
+                case "YearOfConstruction":
+                    Boats.Sort(new GenericComparer<Boat, string>(b => b.YearOfConstruction, IsDescending));
+                    break;
             }
-            if (SortBy.Equals("Id"))
-            {
-                BoatCompareById c = new();
-                Boats.Sort(c);
-            }
-            if (SortBy.Equals("SailNumber"))
-            {
-                BoatCompareBySailNumber c = new();
-                Boats.Sort(c);
-            }
-            if (SortBy.Equals("YearOfConstruction"))
-            {
-                BoatCompareByYear c = new();
-                Boats.Sort(c);
-            }
+
         }
     }
 }
