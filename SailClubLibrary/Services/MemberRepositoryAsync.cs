@@ -29,9 +29,9 @@ namespace SailClubLibrary.Services
                 command.Parameters.AddWithValue("@MemberAddress", member.Address);
                 command.Parameters.AddWithValue("@City", member.City);
                 command.Parameters.AddWithValue("@Mail", member.Mail);
-                command.Parameters.AddWithValue("@MemberType", member.TheMemberType);
-                command.Parameters.AddWithValue("@MemberRole", member.TheMemberRole);
-                command.Parameters.AddWithValue("@MemberImage", member.MemberImage);
+                command.Parameters.AddWithValue("@MemberType", (int)member.TheMemberType);
+                command.Parameters.AddWithValue("@MemberRole", (int)member.TheMemberRole);
+                command.Parameters.AddWithValue("@MemberImage", member.MemberImage ?? "");
                 await command.ExecuteNonQueryAsync();
             }
             catch (Exception e)
@@ -88,14 +88,6 @@ namespace SailClubLibrary.Services
             return members;
         }
 
-        public async Task PrintAll()
-        {
-            foreach (Member m in await GetAllMembers())
-            {
-                Console.WriteLine(m);
-            }
-        }
-
         public async Task RemoveMember(Member member)
         {
             const string query =
@@ -106,7 +98,7 @@ namespace SailClubLibrary.Services
                 await using SqlConnection connection = new(Connection.connectionString);
                 await connection.OpenAsync();
                 await using SqlCommand command = new(query, connection);
-                command.Parameters.AddWithValue("@PhoneNumber", member.PhoneNumber);
+                command.Parameters.AddWithValue("@PhoneNumber", member.Id);
                 await command.ExecuteNonQueryAsync();
             }
             catch (Exception e)
@@ -131,30 +123,33 @@ namespace SailClubLibrary.Services
             return null;
         }
 
-        //TODO
         public async Task UpdateMember(Member member)
         {
-            throw new NotImplementedException();
-            //foreach (Member m in await GetAllMembers())
-            //{
-            //    if (m.PhoneNumber.Equals(member.PhoneNumber))
-            //    {
-            //        member = m;
-            //        break;
-            //    }
-            //}
-            //string query = "SELECT * FROM SailClubMember WHERE PhoneNumber = @PhoneNumber";
-            //try
-            //{
-            //    using SqlConnection connection = new(connectionString);
-            //    await connection.OpenAsync();
-            //    using SqlCommand command = new(query, connection);
-            //    await command.ExecuteNonQueryAsync();
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
+            const string query =
+                @"UPDATE SailClubMember 
+                SET FirstName = @FirstName, SurName = @SurName, PhoneNumber = @PhoneNumber, MemberAddress = @MemberAddress, City = @City, Mail = @Mail, MemberType = @MemberType, MemberRole = @MemberRole, MemberImage = @MemberImage
+                WHERE PhoneNumber = @PhoneNumber";
+            try
+            {
+                await using SqlConnection connection = new(Connection.connectionString);
+                await connection.OpenAsync();
+                await using SqlCommand command = new(query, connection);
+                command.Parameters.AddWithValue("@MemberId", member.Id);
+                command.Parameters.AddWithValue("@FirstName", member.FirstName);
+                command.Parameters.AddWithValue("@SurName", member.SurName);
+                command.Parameters.AddWithValue("@PhoneNumber", member.PhoneNumber);
+                command.Parameters.AddWithValue("@MemberAddress", member.Address);
+                command.Parameters.AddWithValue("@City", member.City);
+                command.Parameters.AddWithValue("@Mail", member.Mail);
+                command.Parameters.AddWithValue("@MemberType", (int)member.TheMemberType);
+                command.Parameters.AddWithValue("@MemberRole", (int)member.TheMemberRole);
+                command.Parameters.AddWithValue("@MemberImage", member.MemberImage ?? "");
+                await command.ExecuteNonQueryAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
