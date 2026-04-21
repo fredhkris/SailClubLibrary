@@ -76,7 +76,7 @@ namespace SailClubLibrary.Services
                         reader.GetString("Mail"),
                         (MemberType)reader.GetInt32("MemberType"),
                         (MemberRole)reader.GetInt32("MemberRole"),
-                        reader.GetString("MemberImage")
+                        reader.IsDBNull("MemberImage") ? "" : reader.GetString("MemberImage")
                     );
                     members.Add(member);
                 }
@@ -117,6 +117,10 @@ namespace SailClubLibrary.Services
 
         public async Task<Member?> SearchMember(string phoneNumber)
         {
+            if (string.IsNullOrEmpty(phoneNumber))
+            {
+                throw new ArgumentNullException();
+            }
             foreach (Member m in await GetAllMembers())
             {
                 if (m.PhoneNumber.Equals(phoneNumber))
