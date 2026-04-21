@@ -12,6 +12,9 @@ namespace SailClubLibrary.Services
 
         }
 
+        /// <summary>
+        /// Adds a given member to the database.
+        /// </summary>
         public async Task AddMember(Member member)
         {
             const string query =
@@ -40,6 +43,9 @@ namespace SailClubLibrary.Services
             }
         }
 
+        /// <summary>
+        /// Filters members currently stored in the database, based on filter criteria.
+        /// </summary>
         public async Task<List<Member>> FilterMembers(string filterCriteria)
         {
             const string query =
@@ -49,12 +55,18 @@ namespace SailClubLibrary.Services
             return await GetMembers(query);
         }
 
+        /// <summary>
+        /// Gets and returns all members in the database.
+        /// </summary>
         public async Task<List<Member>> GetAllMembers()
         {
             const string query = "SELECT * FROM SailClubMember";
             return await GetMembers(query);
         }
 
+        /// <summary>
+        /// Method that returns members filtered by query.
+        /// </summary>
         private async Task<List<Member>> GetMembers(string query)
         {
             List<Member> members = new();
@@ -88,6 +100,9 @@ namespace SailClubLibrary.Services
             return members;
         }
 
+        /// <summary>
+        /// Removes a member stored in the database.
+        /// </summary>
         public async Task RemoveMember(Member member)
         {
             const string query =
@@ -107,6 +122,9 @@ namespace SailClubLibrary.Services
             }
         }
 
+        /// <summary>
+        /// Searches for a member with a specific phone number.
+        /// </summary>
         public async Task<Member?> SearchMember(string phoneNumber)
         {
             if (string.IsNullOrEmpty(phoneNumber))
@@ -123,6 +141,9 @@ namespace SailClubLibrary.Services
             return null;
         }
 
+        /// <summary>
+        /// Updates an existing member in the database.
+        /// </summary>
         public async Task UpdateMember(Member member)
         {
             const string query =
