@@ -7,12 +7,12 @@ namespace RazorBoatApp2026.Pages.Boats
 {
     public class CreateBoatModel : PageModel
     {
-        private readonly IBoatRepository _boatRepo;
+        private readonly IBoatRepositoryAsync _boatRepo;
 
         [BindProperty]
         public Boat NewBoat { get; set; }
 
-        public CreateBoatModel(IBoatRepository boatRepository)
+        public CreateBoatModel(IBoatRepositoryAsync boatRepository)
         {
             _boatRepo = boatRepository;
         }
@@ -21,7 +21,7 @@ namespace RazorBoatApp2026.Pages.Boats
         {
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
             {
@@ -29,24 +29,27 @@ namespace RazorBoatApp2026.Pages.Boats
             }
             try
             {
-                if(NewBoat == null)
-                {
-                    return Page();
-                }
-                NewBoat.Id = _boatRepo.GetAllBoats().Count + 1;
-                _boatRepo.AddBoat(NewBoat);
+                NewBoat.Id = await FindUniqueId();
+                await _boatRepo.AddBoat(NewBoat);
             }
-            //catch (BoatSailnumberExistsException bex)
-            //{
-            //    ViewData["ErrorMessage"] = bex.Message;
-            //    return Page();
-            //}
             catch (Exception exp)
             {
                 ViewData["ErrorMessage"] = exp.Message;
                 return Page();
             }
             return RedirectToPage("Index");
+        }
+
+        private async Task<int> FindUniqueId()
+        {
+            List<Boat> boats = await _boatRepo.GetAllBoats();
+            HashSet<int> reservedIds = new(boats.Select(m => m.Id));
+            int newId = 1;
+            while (reservedIds.Contains(newId))
+            {
+                newId++;
+            }
+            return newId;
         }
     }
 }

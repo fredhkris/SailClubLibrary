@@ -7,25 +7,25 @@ namespace RazorBoatApp2026.Pages.Members
 {
     public class DeleteMemberModel : PageModel
     {
-        private readonly IMemberRepository _memberRepo;
+        private readonly IMemberRepositoryAsync _memberRepo;
 
         [BindProperty]
         public Member DeleteMember { get; set; }
 
-        public DeleteMemberModel(IMemberRepository memberRepo)
+        public DeleteMemberModel(IMemberRepositoryAsync memberRepo)
         {
             _memberRepo = memberRepo;
         }
 
-        public IActionResult OnGet(string phoneNumber)
+        public async Task<IActionResult> OnGet(string phoneNumber)
         {
-            DeleteMember = _memberRepo.SearchMember(phoneNumber);
+            DeleteMember = await _memberRepo.SearchMember(phoneNumber);
             return Page();
         }
 
-        public IActionResult OnPostDelete(string phoneNumber)
+        public async Task<IActionResult> OnPostDelete(string phoneNumber)
         {
-            _memberRepo.RemoveMember(DeleteMember);
+            await _memberRepo.RemoveMember(DeleteMember);
             return RedirectToPage("Index");
         }
 

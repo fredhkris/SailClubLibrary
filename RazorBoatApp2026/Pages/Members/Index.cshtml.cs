@@ -9,7 +9,7 @@ namespace RazorBoatApp2026.Pages.Members
 {
     public class IndexModel : PageModel
     {
-        private readonly IMemberRepository _memberRepo;
+        private readonly IMemberRepositoryAsync _memberRepo;
 
         public List<Member> Members { get; set; }
 
@@ -31,15 +31,15 @@ namespace RazorBoatApp2026.Pages.Members
         [BindProperty(SupportsGet = true)]
         public MemberType? SelectedMemberType { get; set; }
 
-        public IndexModel(IMemberRepository memberRepo)
+        public IndexModel(IMemberRepositoryAsync memberRepo)
         {
             _memberRepo = memberRepo;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
             IsDescending = !string.IsNullOrEmpty(SortBy) && SortBy == PreviousSort && !IsDescending;
-            Members = _memberRepo.GetAllMembers();
+            Members = await _memberRepo.GetAllMembers();
             if (SelectedMemberType.HasValue)
             {
                 Members = Members.FindAll(m => m.TheMemberType == SelectedMemberType);
@@ -120,5 +120,7 @@ namespace RazorBoatApp2026.Pages.Members
                     break;
             }
         }
+
+
     }
 }

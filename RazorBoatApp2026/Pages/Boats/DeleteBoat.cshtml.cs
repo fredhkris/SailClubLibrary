@@ -7,25 +7,25 @@ namespace RazorBoatApp2026.Pages.Boats
 {
     public class DeleteBoatModel : PageModel
     {
-        private IBoatRepository _boatRepo;
+        private IBoatRepositoryAsync _boatRepo;
 
         [BindProperty]
         public Boat DeleteBoat { get; set; }
 
-        public DeleteBoatModel(IBoatRepository boatRepo)
+        public DeleteBoatModel(IBoatRepositoryAsync boatRepo)
         {
             _boatRepo = boatRepo;
         }
 
-        public IActionResult OnGet(string sailNumber)
+        public async Task<IActionResult> OnGet(string sailNumber)
         {
-            DeleteBoat = _boatRepo.SearchBoat(sailNumber);
+            DeleteBoat = await _boatRepo.SearchBoat(sailNumber);
             return Page();
         }
 
-        public IActionResult OnPostDelete(string sailNumber)
+        public async Task<IActionResult> OnPostDelete(string sailNumber)
         {
-            _boatRepo.RemoveBoat(sailNumber);
+            await _boatRepo.RemoveBoat(sailNumber);
             return RedirectToPage("Index");
         }
 

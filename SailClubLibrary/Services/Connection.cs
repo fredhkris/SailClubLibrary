@@ -1,8 +1,8 @@
 ﻿namespace SailClubLibrary.Services
 {
-    // Opbevares lokalt
     public class Connection
     {
+        // Using local database
         public static readonly string connectionString =
             "Data Source=(localdb)\\MSSQLLocalDB;" +
             "Initial Catalog=SailClubDatabase;" +

@@ -7,7 +7,7 @@ namespace RazorBoatApp2026.Pages.Members
 {
     public class CreateMemberModel : PageModel
     {
-        private readonly IMemberRepository _memberRepo;
+        private readonly IMemberRepositoryAsync _memberRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         [BindProperty]
@@ -17,7 +17,7 @@ namespace RazorBoatApp2026.Pages.Members
         public IFormFile Photo { get; set; }
 
 
-        public CreateMemberModel(IMemberRepository memberRepo, IWebHostEnvironment webHostEnvironment)
+        public CreateMemberModel(IMemberRepositoryAsync memberRepo, IWebHostEnvironment webHostEnvironment)
         {
             _memberRepo = memberRepo;
             _webHostEnvironment = webHostEnvironment;
@@ -27,20 +27,13 @@ namespace RazorBoatApp2026.Pages.Members
         {
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
             try
             {
-                if (Photo != null)
-                {
-                    ProcessPhoto();
-                }
-                Member.Id = _memberRepo.GetAllMembers().Count + 1;
-                _memberRepo.AddMember(Member);
+                ProcessPhoto();
+                Member.Id = await FindUniqueId();
+                await _memberRepo.AddMember(Member);
             }
             catch (Exception e)
             {
@@ -52,7 +45,7 @@ namespace RazorBoatApp2026.Pages.Members
 
         private void ProcessPhoto()
         {
-            if(Photo != null)
+            if (Photo != null)
             {
                 if (Member.MemberImage != null)
                 {
@@ -77,6 +70,18 @@ namespace RazorBoatApp2026.Pages.Members
                 }
             }
             return uniqueFileName;
+        }
+
+        private async Task<int> FindUniqueId()
+        {
+            List<Member> members = await _memberRepo.GetAllMembers();
+            HashSet<int> reservedIds = new(members.Select(m => m.Id));
+            int newId = 1;
+            while (reservedIds.Contains(newId))
+            {
+                newId++;
+            }
+            return newId;
         }
     }
 }
