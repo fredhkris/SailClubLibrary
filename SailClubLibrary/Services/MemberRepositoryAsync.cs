@@ -113,7 +113,7 @@ namespace SailClubLibrary.Services
                 await using SqlConnection connection = new(Connection.connectionString);
                 await connection.OpenAsync();
                 await using SqlCommand command = new(query, connection);
-                command.Parameters.AddWithValue("@PhoneNumber", member.Id);
+                command.Parameters.AddWithValue("@PhoneNumber", member.PhoneNumber);
                 await command.ExecuteNonQueryAsync();
             }
             catch (Exception e)
